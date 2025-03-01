@@ -119,6 +119,7 @@ button:hover {
 
 .sent {
     word-wrap: break-word;
+    font-size: 1.5em;
     display: block;
     height: auto;
     background-color: var(--color-secondary);
@@ -131,6 +132,7 @@ button:hover {
 
 .received {
     word-wrap: break-word;
+    font-size: 1.5em;
     display: block;
     height: auto;
     background-color: var(--color-quartary);
