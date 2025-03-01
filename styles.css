@@ -53,7 +53,7 @@ button:hover {
 }
 
 #input-bar input {
-    /* overflow: hidden;
+    overflow: hidden;
     white-space: nowrap;
 
     word-wrap: break-word;
@@ -61,17 +61,6 @@ button:hover {
     height: auto;
 
     width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 15px;
-    margin-right: 0.5rem; */
-
-    word-wrap: break-word;
-    display: block;
-    height: auto;
-    /*Or a min-height*/
-    width: auto;
-    /*Important, or remove width*/
     padding: 10px;
     border: none;
     border-radius: 15px;
