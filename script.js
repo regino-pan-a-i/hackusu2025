@@ -17,7 +17,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-console.log("you are running this script")
+console.log("You made it")
 
 // Handle data retrival after the button click
 function addButtonFunctionality(){
