@@ -46,81 +46,80 @@ async function getCompletion(context) {
     console.log(data);
     return data;
 }
+async function getTabData() {
+    return new Promise((resolve, reject) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length === 0) {
+                console.error("No active tab found.");
+                reject("No active tab");
+                return;
+            }
 
-function getTabData(){
-    // Get the active tab ID before executing the script
-    let currrentTab = chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs.length === 0) {
-            console.error("No active tab found.");
-            return;
-        }
+            const tabId = tabs[0].id;
+            const tabUrl = tabs[0].url;
 
-        const tabId = tabs[0].id;
-        const tabUrl = tabs[0].url;
-        let myTab = {'tabId': tabId, 'tabUrl':tabUrl}
-        
-        // Prevent script injection on chrome:// or restricted URLs
-        try{
+            // Prevent script injection on restricted pages
             if (tabUrl.startsWith("chrome://") || tabUrl.startsWith("chrome-extension://") || tabUrl.startsWith("https://chrome.google.com/webstore")) {
                 console.error("Cannot inject script into restricted Chrome pages.");
-                return null;
+                reject("Restricted page");
+                return;
             }
-        }catch(e){
-            console.log(e)
+
+            resolve({ tabId, tabUrl });
+        });
+    });
+}
+
+async function retrieveData() {
+    try {
+        const tab = await getTabData(); // Now it correctly retrieves the tab info
+        console.log(tab);
+
+        // Execute script to retrieve page data
+        const results = await chrome.scripting.executeScript({
+            target: { tabId: tab.tabId },
+            func: () => document.body.innerText,
+        });
+
+        if (results && results[0]) {
+            getCompletion(results[0].result);
+        } else {
+            console.error("No results from injected script.");
         }
-
-        return myTab
-    })
-    return currrentTab
-}
-
-function retrieveData() {
-
-    const tab = getTabData()
-
-    // Execute script to retrieve page data
-    try {
-        chrome.scripting.executeScript({
-            target: { tabId: tab['tabId'] },
-            func: () => document.body.innerText, 
-        }).then( (results) => {
-            if (results && results[0]) {
-                getCompletion(results[0].result);
-                
-            } else {
-                console.error("No results from injected script.");
-            }
-        }).catch((error) => console.error("Script execution error:", error));
-    } catch (e) {
-        console.error("Execution failed:", e);
+    } catch (error) {
+        console.error("Error retrieving tab data:", error);
     }
-
-
 }
 
 
-function overlayDisplayer(){
 
-    // Execute script to retrieve page data
+async function overlayDisplayer() {
     try {
-        chrome.scripting.executeScript({
-            target: { tabId: tab['tabId'] },
+        const tab = await getTabData();
+        console.log(tab);
+
+        await chrome.scripting.executeScript({
+            target: { tabId: tab.tabId },
             func: () => {
-                let overlay = document.createElement('div')
-                overlay.style.backgroundColor('#CEE2E9')
-                overlay.style.position = "fixed";
-                overlay.style.top = "0";
-                overlay.style.left = "0";
-                overlay.style.width = "100vw";
-                overlay.style.height = "100vh";
-            }, 
-        }).catch((error) => console.error("Script execution error:", error));
-    } catch (e) {
-        console.error("Execution failed:", e);
+                let overlay = document.createElement('div');
+                overlay.style.backgroundColor = '#CEE2E9'; // Fix incorrect syntax
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100vw';
+                overlay.style.height = '100vh';
+                overlay.style.zIndex = '9999';
+                document.body.appendChild(overlay);
+            },
+        });
+    } catch (error) {
+        console.error("Error displaying overlay:", error);
     }
-
 }
 
+function wordPerWord(data){
+
+}
 function wordMode(){
 
     let data = retrieveData()
