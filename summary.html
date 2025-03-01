@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackUSU Extension</title>
+    <script defer src="audioScript.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .loader {
+        width: 50px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        padding: 6px;
+        background:
+            conic-gradient(from 135deg at top,currentColor 90deg, #0000 0) 0 calc(50% - 4px)/17px 8.5px,
+            radial-gradient(farthest-side at bottom left,#0000 calc(100% - 6px),currentColor calc(100% - 5px) 99%,#0000) top right/50%  50% content-box content-box,
+            radial-gradient(farthest-side at top        ,#0000 calc(100% - 6px),currentColor calc(100% - 5px) 99%,#0000) bottom   /100% 50% content-box content-box;
+        background-repeat: no-repeat;
+        animation: l11 1s infinite linear;
+        }
+        @keyframes l11{ 
+        100%{transform: rotate(1turn)}
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">HackUSU</h1>
+    <h2>Listen to the summary</h2>
+    <div id="audio" class="loader"></div>
+    <br>
+    <div id="control" hidden>
+        <label for="speedSlider">Speed:</label>
+        <button id="minus" style="width: 25px; height: 45px; font-size: 18px;">&lt;</button>
+        <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1"  style="flex: 1;">
+        <button id="plus" style="width: 25px; height: 45px; font-size: 18px;">></button>
+        <span id="speedValue" style="font-weight: bold;" style="font-weight: bold; width: 40px; text-align: center;">1.0x</span>
+    </div>
+</body>
+
+</html>

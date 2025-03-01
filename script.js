@@ -23,8 +23,8 @@ document.getElementById('understand').addEventListener('click', () => {
         .catch((error) => console.error(error));
 });
 
-document.getElementById("title").addEventListener("click", () => {
-    chrome.sidePanel.setOptions({ path: 'index.html' })
+document.getElementById('summary').addEventListener('click', () => {
+    chrome.sidePanel.setOptions({ path: 'summary.html' })
         .then(() => chrome.sidePanel.open())
         .catch((error) => console.error(error));
 });
