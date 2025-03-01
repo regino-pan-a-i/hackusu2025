@@ -100,6 +100,11 @@ function updateResponse(input){
 
 document.getElementById('submit').addEventListener('click', send);
 
+function scrollToBottom() {
+    const conversation = document.getElementById("conversation");
+    conversation.scrollTop = conversation.scrollHeight;
+}
+
 function writeDialog(className, input){
     const conversation = document.getElementById('conversation');
     const newMessage = document.createElement('div');
@@ -108,6 +113,8 @@ function writeDialog(className, input){
     });
     newMessage.textContent = input;
     conversation.appendChild(newMessage);
+    scrollToBottom();
+
     
 }
 function autoResize(e) {
