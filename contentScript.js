@@ -12,3 +12,19 @@ document.getElementById("title").addEventListener("click", () => {
         .then(() => chrome.sidePanel.open())
         .catch((error) => console.error(error));
 });
+
+document.getElementById('submit').addEventListener('click', () => {
+    const input = document.getElementById('prompt').value;
+    console.log(input);
+
+    const conversation = document.getElementById('conversation');
+    console.log(conversation);
+
+    const newMessage = document.createElement('div');
+    console.log(newMessage);
+
+    // newMessage.textContent = input;
+    // conversation.appendChild(newMessage);
+    // document.getElementById('prompt').value = '';
+
+});
