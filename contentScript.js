@@ -13,7 +13,7 @@ document.getElementById("title").addEventListener("click", () => {
         .catch((error) => console.error(error));
 });
 
-document.getElementById('submit').addEventListener('click', () => {
+document.getElementById('submit').addEventListener('click', async () => {
     const input = document.getElementById('prompt').value;
 
     const conversation = document.getElementById('conversation');
@@ -22,7 +22,7 @@ document.getElementById('submit').addEventListener('click', () => {
     newMessage.classList.add('sent');
     newMessage.textContent = input;
 
-    //aqui haz tu vaina
+    await //aqui haz tu vaina
 
     conversation.appendChild(newMessage);
     document.getElementById('prompt').value = '';
