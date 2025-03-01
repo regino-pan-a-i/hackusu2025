@@ -82,7 +82,7 @@ async function addButtonFunctionality(input) {
 
 async function send() {
     const input = document.getElementById('prompt').value;
-    
+    document.getElementById('desc').setAttribute('hidden','true')
     writeDialog('sent', input)
     
     document.getElementById('prompt').value = '';

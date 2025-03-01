@@ -20,18 +20,5 @@
         "sidePanel",
         "contextMenus",
         "activeTab"
-    ],
-    "background": {
-        "service_worker": "script.js"
-    },
-    "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "contentScript.js"
-            ]
-        }
     ]
 }
