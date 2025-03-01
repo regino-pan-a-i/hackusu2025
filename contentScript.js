@@ -22,5 +22,8 @@ document.getElementById('submit').addEventListener('click', () => {
     newMessage.classList.add('sent');
     newMessage.textContent = input;
 
+    //aqui haz tu vaina
+
     conversation.appendChild(newMessage);
+    document.getElementById('prompt').value = '';
 });
