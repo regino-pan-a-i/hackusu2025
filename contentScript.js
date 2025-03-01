@@ -92,6 +92,11 @@ document.getElementById('submit').addEventListener('click', async () => {
     await addButtonFunctionality(input)
 });
 
+function scrollToBottom() {
+    const conversation = document.getElementById("conversation");
+    conversation.scrollTop = conversation.scrollHeight;
+}
+
 function writeDialog(className, input){
     const conversation = document.getElementById('conversation');
 
@@ -99,5 +104,6 @@ function writeDialog(className, input){
     newMessage.classList.add(className)
     newMessage.textContent = input;
     conversation.appendChild(newMessage);
+    scrollToBottom();
 
 }
