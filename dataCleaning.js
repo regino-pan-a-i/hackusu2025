@@ -99,7 +99,7 @@ function retrieveData() {
 }
 
 
-function wordPerWord(data){
+function overlayDisplayer(){
 
     // Execute script to retrieve page data
     try {
@@ -107,15 +107,14 @@ function wordPerWord(data){
             target: { tabId: tab['tabId'] },
             func: () => {
                 let overlay = document.createElement('div')
+                overlay.style.backgroundColor('#CEE2E9')
                 overlay.style.position = "fixed";
                 overlay.style.top = "0";
                 overlay.style.left = "0";
                 overlay.style.width = "100vw";
                 overlay.style.height = "100vh";
             }, 
-        }).then( 
-            displaywords(data)
-        ).catch((error) => console.error("Script execution error:", error));
+        }).catch((error) => console.error("Script execution error:", error));
     } catch (e) {
         console.error("Execution failed:", e);
     }
@@ -125,11 +124,13 @@ function wordPerWord(data){
 function wordMode(){
 
     let data = retrieveData()
+    overlayDisplayer()
     wordPerWord(data)
 }
 function blurMode(){
     
     let data = retrieveData()
+    overlayDisplayer()
     console.log('data ready to parse as lines with blurry background')
 }
 
