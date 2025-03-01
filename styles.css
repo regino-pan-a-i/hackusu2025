@@ -53,6 +53,13 @@ button:hover {
 }
 
 #input-bar input {
+    overflow: hidden;
+    white-space: nowrap;
+
+    word-wrap: break-word;
+    display: block;
+    height: auto;
+
     width: 100%;
     padding: 10px;
     border: none;
@@ -77,7 +84,8 @@ button:hover {
 }
 
 .sent {
-    text-overflow: ;
+    word-wrap: break-word;
+    display: block;
     height: auto;
     background-color: var(--color-secondary);
     color: var(--color-tertiary);
@@ -88,6 +96,8 @@ button:hover {
 }
 
 .received {
+    word-wrap: break-word;
+    display: block;
     height: auto;
     background-color: var(--color-tertiary);
     color: var(--color-secondary);

@@ -1,11 +1,3 @@
-// document.getElementById('understand').addEventListener('click', () => {
-//     chrome.runtime.sendMessage({
-//         action: 'updateSidePanel',
-//         newHtmlPath: 'understand.html'
-//     }, (response) => {
-//         console.log(response.status);
-//     });
-// });
 
 const apiKey = "YOUR_OPENAI_API_KEY"; // Replace 
 
@@ -33,9 +25,10 @@ async function getCompletion(question, context) {
         })
     });
 
-    const data = await response.json();
+    let data = await response.json();
     console.log(data);
-    return data.choices[0].message.content
+    data = data.choices[0].message.content
+    writeDialog('received', data)
 }
 
 document.getElementById("title").addEventListener("click", () => {
@@ -44,63 +37,67 @@ document.getElementById("title").addEventListener("click", () => {
         .catch((error) => console.error(error));
 });
 
-function addButtonFunctionality() {
-        // Get the active tab ID before executing the script
-        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-            if (tabs.length === 0) {
-                console.error("No active tab found.");
+async function addButtonFunctionality(input) {
+    // Get the active tab ID before executing the script
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+        if (tabs.length === 0) {
+            console.error("No active tab found.");
+            return;
+        }
+
+        const tabId = tabs[0].id;
+        const tabUrl = tabs[0].url;
+        
+        try{
+            // Prevent script injection on chrome:// or restricted URLs
+            if (tabUrl.startsWith("chrome://") || tabUrl.startsWith("chrome-extension://") || tabUrl.startsWith("https://chrome.google.com/webstore")) {
+                console.error("Cannot inject script into restricted Chrome pages.");
                 return;
             }
+        }catch(e){
+            console.log(e)
+        }
 
-            const tabId = tabs[0].id;
-            const tabUrl = tabs[0].url;
-            
-            try{
-                // Prevent script injection on chrome:// or restricted URLs
-                if (tabUrl.startsWith("chrome://") || tabUrl.startsWith("chrome-extension://") || tabUrl.startsWith("https://chrome.google.com/webstore")) {
-                    console.error("Cannot inject script into restricted Chrome pages.");
-                    return;
+        // let prompt = retrievePrompt();
+        console.log("Prompt:", input);
+
+        try {
+            // Execute script to retrieve page data
+            chrome.scripting.executeScript({
+                target: { tabId: tabId },
+                func: () => document.body.innerText, // Run this function in the tab
+            }).then( (results) => {
+                if (results && results[0]) {
+                    getCompletion(input,results[0].result);
+                    
+                } else {
+                    console.error("No results from injected script.");
                 }
-            }catch(e){
-                console.log(e)
-            }
+            }).catch((error) => console.error("Script execution error:", error));
+        } catch (e) {
+            console.error("Execution failed:", e);
+        }
+    });
 
-            // Import the functions dynamically
-            const { retrievePrompt } = await import("./scripts/retriever.mjs");
+}
 
-            let prompt = retrievePrompt();
-            console.log("Prompt:", prompt);
-
-            try {
-                // Execute script to retrieve page data
-                chrome.scripting.executeScript({
-                    target: { tabId: tabId },
-                    func: () => document.body.innerText, // Run this function in the tab
-                }).then( async (results) => {
-                    if (results && results[0]) {
-                        console.log("Page Data:", results[0].result);
-                        response=await getCompletion(prompt,results[0].result);
-                    } else {
-                        console.error("No results from injected script.");
-                    }
-                }).catch((error) => console.error("Script execution error:", error));
-            } catch (e) {
-                console.error("Execution failed:", e);
-            }
-        });
-    }
-
-document.getElementById('submit').addEventListener('click', () => {
+document.getElementById('submit').addEventListener('click', async () => {
     const input = document.getElementById('prompt').value;
 
+    writeDialog('sent', input)
+
+    document.getElementById('prompt').value = '';
+    
+    //aqui haz tu vaina
+    await addButtonFunctionality(input)
+});
+
+function writeDialog(className, input){
     const conversation = document.getElementById('conversation');
 
     const newMessage = document.createElement('div');
-    newMessage.classList.add('sent');
+    newMessage.classList.add(className)
     newMessage.textContent = input;
-
-    addButtonFunctionality();
-
     conversation.appendChild(newMessage);
-    document.getElementById('prompt').value = '';
-});
+
+}
