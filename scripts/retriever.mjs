@@ -1,11 +1,11 @@
 export function retrievePageData(){
     let data = document.body.innerText
-    console.log(data)
+    // console.log(data)
     return data
 }
 
 export function retrievePrompt(){
     let prompt = document.getElementById('prompt').value
-    console.log(prompt)
+    // console.log(prompt)
     return prompt
 }

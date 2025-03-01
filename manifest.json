@@ -11,7 +11,12 @@
     "side_panel": {
         "default_path": "index.html"
     },
+    "host_permissions": [
+    "<all_urls>"
+    ],
     "permissions": [
+        "tabs",
+        "scripting",
         "sidePanel",
         "contextMenus",
         "activeTab"

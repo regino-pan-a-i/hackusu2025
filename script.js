@@ -19,27 +19,56 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 console.log("You made it")
 
-// Handle data retrival after the button click
-function addButtonFunctionality(){
-    document.getElementById("button").addEventListener('click', async ()=>{
-        
-        const { retrievePrompt } = await import("./scripts/retriever.mjs");
+// Handle data retrieval after the button click
+function addButtonFunctionality() {
+    document.getElementById("button").addEventListener("click", async () => {
+        // Get the active tab ID before executing the script
+        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+            if (tabs.length === 0) {
+                console.error("No active tab found.");
+                return;
+            }
 
-        let prompt = retrievePrompt();
-        console.log(prompt)
+            const tabId = tabs[0].id;
+            const tabUrl = tabs[0].url;
+            
+            try{
+                // Prevent script injection on chrome:// or restricted URLs
+                if (tabUrl.startsWith("chrome://") || tabUrl.startsWith("chrome-extension://") || tabUrl.startsWith("https://chrome.google.com/webstore")) {
+                    console.error("Cannot inject script into restricted Chrome pages.");
+                    return;
+                }
+            }catch(e){
+                console.log(e)
+            }
 
-        // Inject retrievePageData() into the page
-        chrome.scripting.executeScript({
-            target: { allFrames: true },
-            func: () => document.body.innerText,
-        }).then((results) => {
-            let data = results[0].result;
-            console.log(data);
+            // Import the functions dynamically
+            const { retrievePrompt } = await import("./scripts/retriever.mjs");
+
+            let prompt = retrievePrompt();
+            console.log("Prompt:", prompt);
+
+            try {
+                // Execute script to retrieve page data
+                chrome.scripting.executeScript({
+                    target: { tabId: tabId },
+                    func: () => document.body.innerText, // Run this function in the tab
+                }).then((results) => {
+                    if (results && results[0]) {
+                        console.log("Page Data:", results[0].result);
+                    } else {
+                        console.error("No results from injected script.");
+                    }
+                }).catch((error) => console.error("Script execution error:", error));
+            } catch (e) {
+                console.error("Execution failed:", e);
+            }
         });
-    })
+    });
 }
 
-document.addEventListener("DOMContentLoaded", addButtonFunctionality)
+// Ensure script runs after the DOM loads
+document.addEventListener("DOMContentLoaded", addButtonFunctionality);
 
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
