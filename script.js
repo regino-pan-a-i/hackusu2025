@@ -17,11 +17,23 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === 'updateSidePanel') {
-        chrome.sidePanel.setOptions({
-            path: request.newHtmlPath
-        });
-        sendResponse({ status: 'Side panel updated' });
-    }
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//     if (request.action === 'updateSidePanel') {
+//         chrome.sidePanel.setOptions({
+//             path: request.newHtmlPath
+//         });
+//         sendResponse({ status: 'Side panel updated' });
+//     }
+// });
+
+document.getElementById('understand').addEventListener('click', () => {
+    chrome.sidePanel.setOptions({ path: 'understand.html' })
+        .then(() => chrome.sidePanel.open())
+        .catch((error) => console.error(error));
+});
+
+document.getElementById("title").addEventListener("click", () => {
+    chrome.sidePanel.setOptions({ path: 'index.html' })
+        .then(() => chrome.sidePanel.open())
+        .catch((error) => console.error(error));
 });
