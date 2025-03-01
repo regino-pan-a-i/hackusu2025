@@ -44,9 +44,7 @@ document.getElementById("title").addEventListener("click", () => {
         .catch((error) => console.error(error));
 });
 
-// Handle data retrieval after the button click
 function addButtonFunctionality() {
-    document.getElementById("submit").addEventListener("click", async () => {
         // Get the active tab ID before executing the script
         chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
             if (tabs.length === 0) {
@@ -90,8 +88,19 @@ function addButtonFunctionality() {
                 console.error("Execution failed:", e);
             }
         });
-    });
-}
+    }
 
-// Ensure script runs after the DOM loads
-document.addEventListener("DOMContentLoaded", addButtonFunctionality);
+document.getElementById('submit').addEventListener('click', () => {
+    const input = document.getElementById('prompt').value;
+
+    const conversation = document.getElementById('conversation');
+
+    const newMessage = document.createElement('div');
+    newMessage.classList.add('sent');
+    newMessage.textContent = input;
+
+    addButtonFunctionality();
+
+    conversation.appendChild(newMessage);
+    document.getElementById('prompt').value = '';
+});
