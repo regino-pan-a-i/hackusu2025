@@ -17,8 +17,6 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-console.log("You made it")
-
 // Handle data retrieval after the button click
 function addButtonFunctionality() {
     document.getElementById("button").addEventListener("click", async () => {
@@ -70,12 +68,14 @@ function addButtonFunctionality() {
 // Ensure script runs after the DOM loads
 document.addEventListener("DOMContentLoaded", addButtonFunctionality);
 
+document.getElementById('understand').addEventListener('click', () => {
+    chrome.sidePanel.setOptions({ path: 'understand.html' })
+        .then(() => chrome.sidePanel.open())
+        .catch((error) => console.error(error));
+});
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === 'updateSidePanel') {
-        chrome.sidePanel.setOptions({
-            path: request.newHtmlPath
-        });
-        sendResponse({ status: 'Side panel updated' });
-    }
+document.getElementById("title").addEventListener("click", () => {
+    chrome.sidePanel.setOptions({ path: 'index.html' })
+        .then(() => chrome.sidePanel.open())
+        .catch((error) => console.error(error));
 });
