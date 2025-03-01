@@ -6,6 +6,6 @@ export function retrievePageData(){
 
 export function retrievePrompt(){
     let prompt = document.getElementById('prompt').value
-    // console.log(prompt)
+    console.log(prompt)
     return prompt
 }
