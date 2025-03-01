@@ -70,9 +70,9 @@ async function getTabData() {
     });
 }
 
-async function retrieveData() {
+async function retrieveData(tab) {
     try {
-        const tab = await getTabData(); // Now it correctly retrieves the tab info
+        // const tab = await getTabData(); // Now it correctly retrieves the tab info
         console.log(tab);
 
         // Execute script to retrieve page data
@@ -93,9 +93,9 @@ async function retrieveData() {
 
 
 
-async function overlayDisplayer() {
+async function overlayDisplayer(tab) {
     try {
-        const tab = await getTabData();
+        // const tab = await getTabData();
         console.log(tab);
 
         await chrome.scripting.executeScript({
@@ -117,19 +117,26 @@ async function overlayDisplayer() {
     }
 }
 
+async function setUp(){
+    let tab = await getTabData()
+    let data = retrieveData(tab)
+    overlayDisplayer(tab)
+    return data
+}
+
 function wordPerWord(data){
 
 }
 function wordMode(){
-
-    let data = retrieveData()
-    overlayDisplayer()
+    let data = setUp()
     wordPerWord(data)
 }
-function blurMode(){
-    
-    let data = retrieveData()
-    overlayDisplayer()
+async function blurMode(){
+    let data = setUp()
+
+    // Inserta tu vaina aqui
+
+
     console.log('data ready to parse as lines with blurry background')
 }
 
