@@ -7,6 +7,37 @@
 //     });
 // });
 
+const apiKey = "YOUR_OPENAI_API_KEY"; // Replace 
+
+async function getCompletion(question, context) {
+    if (!question || !context) {
+        console.error("question or context is undefined.");
+        return;
+    }
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+            model: "gpt-4o",
+            messages: [
+                //{ role: "system", content: "You are a helpful assistant." },
+                {
+                    role: "user",
+                    content: `Using the following context, answer the question provided:\n\nContext: ${context}\n\nQuestion: ${question}`
+                }
+            ]
+        })
+    });
+
+    const data = await response.json();
+    console.log(data);
+    return data.choices[0].message.content
+}
+
 document.getElementById("title").addEventListener("click", () => {
     chrome.sidePanel.setOptions({ path: 'index.html' })
         .then(() => chrome.sidePanel.open())
@@ -47,9 +78,10 @@ function addButtonFunctionality() {
                 chrome.scripting.executeScript({
                     target: { tabId: tabId },
                     func: () => document.body.innerText, // Run this function in the tab
-                }).then((results) => {
+                }).then( async (results) => {
                     if (results && results[0]) {
                         console.log("Page Data:", results[0].result);
+                        response=await getCompletion(prompt,results[0].result);
                     } else {
                         console.error("No results from injected script.");
                     }
