@@ -16,3 +16,27 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         chrome.sidePanel.open({ windowId: tab.windowId });
     }
 });
+
+console.log("you are running this script")
+
+// Handle data retrival after the button click
+function addButtonFunctionality(){
+    document.getElementById("button").addEventListener('click', async ()=>{
+        
+        const { retrievePrompt } = await import("./scripts/retriever.mjs");
+
+        let prompt = retrievePrompt();
+        console.log(prompt)
+
+        // Inject retrievePageData() into the page
+        chrome.scripting.executeScript({
+            target: { allFrames: true },
+            func: () => document.body.innerText,
+        }).then((results) => {
+            let data = results[0].result;
+            console.log(data);
+        });
+    })
+}
+
+document.addEventListener("DOMContentLoaded", addButtonFunctionality)
