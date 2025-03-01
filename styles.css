@@ -31,6 +31,10 @@ button:hover {
     color: var(--color-secondary);
 }
 
+#title:hover {
+    cursor: pointer;
+}
+
 /* #prompt {
     background-color: var(--color-tertiary);
     color: var(--color-primary);
