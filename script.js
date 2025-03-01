@@ -40,3 +40,13 @@ function addButtonFunctionality(){
 }
 
 document.addEventListener("DOMContentLoaded", addButtonFunctionality)
+
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'updateSidePanel') {
+        chrome.sidePanel.setOptions({
+            path: request.newHtmlPath
+        });
+        sendResponse({ status: 'Side panel updated' });
+    }
+});

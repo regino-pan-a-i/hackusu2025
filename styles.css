@@ -1,0 +1,41 @@
+:root {
+    --color-primary: #f9f9f9;
+    --color-secondary: #080808;
+    --color-tertiary: #36373a;
+}
+
+body {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-primary: #36373a;
+        --color-secondary: #f9f9f9;
+        --color-tertiary: #080808;
+    }
+}
+
+button {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--color-tertiary);
+    color: var(--color-secondary);
+}
+
+/* #prompt {
+    background-color: var(--color-tertiary);
+    color: var(--color-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+} */
