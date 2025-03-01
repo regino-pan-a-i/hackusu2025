@@ -15,7 +15,7 @@ async function getCompletion(question, context) {
         body: JSON.stringify({
             model: "gpt-4o",
             messages: [
-                //{ role: "system", content: "You are a helpful assistant." },
+                { role: "system", content: "You will be provided with data with the content of a website and an user prompt. Help the user with your knowledge and processing the provided data" },
                 {
                     role: "user",
                     content: `Using the following context, answer the question provided:\n\nContext: ${context}\n\nQuestion: ${question}`
@@ -95,7 +95,10 @@ async function send() {
 function updateResponse(input){
     let dialog=document.querySelector('#conversation').lastElementChild;
     dialog.classList.remove('loader')
-    dialog.textContent = input;
+    //dialog.textContent = input;
+    var converter = new showdown.Converter();
+    html      = converter.makeHtml(input);
+    dialog.innerHTML=html;
 }
 
 document.getElementById('submit').addEventListener('click', send);
