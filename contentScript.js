@@ -1,4 +1,3 @@
-
 const apiKey = "YOUR_OPENAI_API_KEY"; // Replace 
 
 async function getCompletion(question, context) {
@@ -27,8 +26,8 @@ async function getCompletion(question, context) {
 
     let data = await response.json();
     console.log(data);
-    data = data.choices[0].message.content
-    writeDialog('received', data)
+    data = data.choices[0].message.content;
+    updateResponse(data);
 }
 
 document.getElementById("title").addEventListener("click", () => {
@@ -81,16 +80,25 @@ async function addButtonFunctionality(input) {
 
 }
 
-document.getElementById('submit').addEventListener('click', async () => {
+async function send() {
     const input = document.getElementById('prompt').value;
-
+    
     writeDialog('sent', input)
-
+    
     document.getElementById('prompt').value = '';
     
     //aqui haz tu vaina
+    writeDialog('received loader', '')
     await addButtonFunctionality(input)
-});
+}
+
+function updateResponse(input){
+    let dialog=document.querySelector('#conversation').lastElementChild;
+    dialog.classList.remove('loader')
+    dialog.textContent = input;
+}
+
+document.getElementById('submit').addEventListener('click', send);
 
 function scrollToBottom() {
     const conversation = document.getElementById("conversation");
@@ -99,11 +107,31 @@ function scrollToBottom() {
 
 function writeDialog(className, input){
     const conversation = document.getElementById('conversation');
-
     const newMessage = document.createElement('div');
-    newMessage.classList.add(className)
+    className.split(' ').forEach(element => {
+        newMessage.classList.add(element) 
+    });
     newMessage.textContent = input;
     conversation.appendChild(newMessage);
     scrollToBottom();
 
+    
 }
+function autoResize(e) {
+    if (e.key === 'Enter') {
+        if (e.shiftKey) {
+            // Shift + Enter: Allow the default behavior (insert a new line)
+            return; // No action needed; let the browser insert a new line
+        } else {
+            // Enter alone: Prevent the default behavior and trigger the send function
+            e.preventDefault(); // Prevents a new line from being added
+            send(); // Call the send function
+        }
+        }
+    textarea=e.target;
+    // Reset the height to "auto" to shrink it if text is deleted
+    textarea.style.height = 'auto'; 
+    // Set the height to match the scrollHeight (content height)
+    textarea.style.height = (textarea.scrollHeight) + 'px';
+  }
+document.getElementById('prompt').addEventListener('keydown', autoResize);
