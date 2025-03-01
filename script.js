@@ -23,6 +23,13 @@ document.getElementById('understand').addEventListener('click', () => {
         .catch((error) => console.error(error));
 });
 
+document.getElementById('focus').addEventListener('click', () => {
+    chrome.sidePanel.setOptions({ path: 'focus.html' })
+        .then(() => chrome.sidePanel.open())
+        .catch((error) => console.error(error));
+});
+
+
 document.getElementById('summary').addEventListener('click', () => {
     chrome.sidePanel.setOptions({ path: 'summary.html' })
         .then(() => chrome.sidePanel.open())
