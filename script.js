@@ -16,3 +16,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         chrome.sidePanel.open({ windowId: tab.windowId });
     }
 });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'updateSidePanel') {
+        chrome.sidePanel.setOptions({
+            path: request.newHtmlPath
+        });
+        sendResponse({ status: 'Side panel updated' });
+    }
+});
