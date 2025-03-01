@@ -11,7 +11,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-primary: #36373a;        
+        --color-primary: #36373a;
         --color-secondary: #f9f9f9;
         --color-tertiary: #080808;
     }
@@ -35,7 +35,7 @@ button:hover {
     cursor: pointer;
 }
 
-.conversation{
+.conversation {
     background-color: var(--color-primary);
     display: flex;
     flex-direction: column;
@@ -67,4 +67,32 @@ button:hover {
     border-radius: 20px;
     border: none;
     cursor: pointer;
+}
+
+#conversation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.sent {
+    text-overflow: ;
+    height: auto;
+    background-color: var(--color-secondary);
+    color: var(--color-tertiary);
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 70%;
+    align-self: flex-end;
+}
+
+.received {
+    height: auto;
+    background-color: var(--color-tertiary);
+    color: var(--color-secondary);
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 70%;
+    align-self: flex-start;
 }

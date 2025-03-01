@@ -15,16 +15,12 @@ document.getElementById("title").addEventListener("click", () => {
 
 document.getElementById('submit').addEventListener('click', () => {
     const input = document.getElementById('prompt').value;
-    console.log(input);
 
     const conversation = document.getElementById('conversation');
-    console.log(conversation);
 
     const newMessage = document.createElement('div');
-    console.log(newMessage);
+    newMessage.classList.add('sent');
+    newMessage.textContent = input;
 
-    // newMessage.textContent = input;
-    // conversation.appendChild(newMessage);
-    // document.getElementById('prompt').value = '';
-
+    conversation.appendChild(newMessage);
 });
